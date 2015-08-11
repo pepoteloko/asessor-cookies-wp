@@ -2,15 +2,16 @@
   General
   ============================================*/
 .cdp-cookies-alerta {
+	display:none;
 	width: 100%;
 	color:#bbbbbb;
 	background-color: #444444;
-	z-index: 10000;
+	z-index: 100000;
 }
 .cdp-cookies-alerta .cdp-cookies-texto {
 	max-width: 960px;
 	margin: 0 auto;
-	padding: 5px 10px 5px 10px;
+	padding: 20px 10px 20px 10px;
 }
 .cdp-cookies-alerta .cdp-cookies-texto h4 {
 	text-align: center;
@@ -43,8 +44,8 @@
 	border: 0;
 	text-rendering: optimizeLegibility;
 }
-.cdp-cookies-alerta .cdp-cookies-texto a:hover,
-.cdp-cookies-alerta .cdp-cookies-texto a:active,
+.cdp-cookies-alerta .cdp-cookies-texto a:hover, 
+.cdp-cookies-alerta .cdp-cookies-texto a:active, 
 .cdp-cookies-alerta .cdp-cookies-texto a:visited {
 	color: #ffcccc;
 }
@@ -102,12 +103,12 @@
 	color: #bbbbbb;
 }
 .cdp-cookies-alerta.cdp-cookies-tema-gris .cdp-cookies-texto a {
-	color: #fff !important;
+	color: #ff8888 !important;
 }
 .cdp-cookies-alerta.cdp-cookies-tema-gris .cdp-cookies-texto a:hover,
 .cdp-cookies-alerta.cdp-cookies-tema-gris .cdp-cookies-texto a:active,
 .cdp-cookies-alerta.cdp-cookies-tema-gris .cdp-cookies-texto a:visited {
-	color: #fff !important;
+	color: #ffcccc !important;
 }
 
 /*============================================
@@ -206,21 +207,21 @@
   boton cerrar
   ============================================*/
 .cdp-cookies-alerta .cdp-cookies-boton-cerrar {
-	background-color: #e21c2b;
 	font-size: 12px;
 	line-height: 14px;
 	display: block;
 	width: 75px;
-	margin: 5px auto;
+	margin: 5px auto 0 auto;
 	text-decoration: none;
 	border: none;
 	text-shadow: 1px 1px 2px #000;
 	text-align: center;
 	padding: 3px 10px;
-	border-radius: 5px;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-	-khtml-border-radius: 5px;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -khtml-border-radius: 5px;
+	background-color: #222;
 	color: #fff !important;
 }
 .cdp-cookies-alerta .cdp-cookies-boton-cerrar:hover {

@@ -2,8 +2,8 @@
 Contributors: Josep Rius (<a href="http://http://ekadesign.eu">Eka Design</a>), Carlos Doral Pérez (<a href="http:://webartesanal.com">webartesanal.com</a>)
 Tags: cookie, cookies, spain, ley, law, politica, policy, españa, normativa
 Requires at least: 3.5
-Tested up to: 3.8.1
-Stable tag: 0.18
+Tested up to: 4.1.1
+Stable tag: 0.2
 License: GPLv2 or later
 
 Este plugin le va a facilitar la confección de la política de cookies para su sitio web proporcionándole los textos legales y técnicos iniciales.
@@ -35,6 +35,9 @@ Características del plugin:
 6. Es conveniente que añada en su menú o en el pié de página de su web un enlace 'Política de cookies' visible que debe apuntar a la página que ha creado sobre la política de cookies.
 
 == Changelog ==
+
+= 0.2 =
+* Actualizamos con la versión 0.21 del plugin original.
 
 = 0.1 =
 * Mis adaptaciones al plugin "Asesor de Cookies para normativa española" de Caros Doral

@@ -6,5 +6,8 @@ Localizados los textos del plugin mediante WordPress y adaptado al uso de WPML c
 
 ## Changelog
 
+= 0.2 =
+* Actualizamos con la versión 0.21 del plugin original.
+
 = 0.1 =
-* Mis adaptaciones al plugin "Asesor de Cookies para normativa española" de Caros Doral
+* Mis adaptaciones al plugin "Asesor de Cookies para normativa española" de Caros Doral.
