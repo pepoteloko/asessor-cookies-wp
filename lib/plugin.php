@@ -27,7 +27,7 @@ class cdp_cookies
 		//
 		if( !( function_exists( 'add_action' ) && defined( 'ABSPATH' ) ) )
 			throw new cdp_cookies_error( 'Este plugin no puede ser llamado directamente' );
-		
+
 		//
 		// Ejecutando Admin
 		//
@@ -36,11 +36,11 @@ class cdp_cookies
 			add_filter( 'plugin_action_links', array( __CLASS__, 'enlaces_pagina_plugins' ), 10, 2 );
 			add_action( 'admin_menu', array( __CLASS__, 'crear_menu_admin' ) );
 			add_action( 'admin_enqueue_scripts', array( __CLASS__, 'cargar_archivos_admin' ) );
-			add_action( 'wp_ajax_guardar_config', array( __CLASS__, 'ajax_guardar_config' ) );			
-			add_action( 'wp_ajax_crear_paginas', array( __CLASS__, 'ajax_crear_paginas' ) );			
+			add_action( 'wp_ajax_guardar_config', array( __CLASS__, 'ajax_guardar_config' ) );
+			add_action( 'wp_ajax_crear_paginas', array( __CLASS__, 'ajax_crear_paginas' ) );
 			return;
 		}
-		
+
 		//
 		// Ejecutando front
 		//
@@ -61,7 +61,7 @@ class cdp_cookies
 			$class .= ' cdp-cookies-layout-ventana';
 		else
 			$class .= ' cdp-cookies-layout-pagina';
-		
+
 		//
 		// Posición: superior, inferior
 		//
@@ -87,7 +87,7 @@ class cdp_cookies
 		$estilo_titulo = 'style="font-size:{tam_fuente_titulo}px !important;line-height:{tam_fuente_titulo}px !important"';
 		$estilo_enlace = 'style="font-size:{tam_fuente} !important;line-height:{tam_fuente} !important"';
 		$texto_aviso = html_entity_decode( self::parametro( 'texto_aviso' ) );
-		
+
 		//
 		$html = file_get_contents( CDP_COOKIES_DIR_HTML . 'front/aviso.html' );
 		$html = str_replace( '{texto_aviso}', $texto_aviso, $html );
@@ -98,15 +98,15 @@ class cdp_cookies
 		$html = str_replace( '{enlace_politica}', self::parametro( 'enlace_politica' ), $html );
 		$html = str_replace( '{tam_fuente}', $tam_fuente, $html );
 		$html = str_replace( '{tam_fuente_titulo}', $tam_fuente_titulo, $html );
-		
+
 		//
 		$boton = '';
 		if( self::parametro( 'comportamiento' ) == 'cerrar' )
-			$boton = '<a href="javascript:;" class="cdp-cookies-boton-cerrar">CERRAR</a>';
+			$boton = '<a href="javascript:;" class="cdp-cookies-boton-cerrar">' . __("CLOSE") . '</a>';
 		if( self::parametro( 'comportamiento' ) == 'aceptar' )
-			$boton = '<a href="javascript:;" class="cdp-cookies-boton-cerrar">ACEPTAR</a>';
+			$boton = '<a href="javascript:;" class="cdp-cookies-boton-cerrar">' . __("ACCEPT") . '</a>';
 		$html = str_replace( '{boton_cerrar}', $boton, $html );
-		
+
 		//
 		echo $html;
 	}
@@ -127,8 +127,8 @@ class cdp_cookies
 		//
 		// Procedo
 		//
-		$enlace = array( 
-			sprintf( 
+		$enlace = array(
+			sprintf(
 				"<a href=\"%s\">%s</a>",
 				admin_url( 'tools.php?page=cdp_cookies' ),
 				__( 'Configuración' )
@@ -144,8 +144,8 @@ class cdp_cookies
 		wp_enqueue_style( 'front-estilos', CDP_COOKIES_URL_HTML . 'front/estilos.css', false );
 		wp_enqueue_script( 'front-principal', CDP_COOKIES_URL_HTML . 'front/principal.js', array( 'jquery' ) );
 		wp_localize_script
-		( 
-			'front-principal', 
+		(
+			'front-principal',
 			'cdp_cookies_info',
 			array
 			(
@@ -154,7 +154,7 @@ class cdp_cookies
 				'comportamiento' => self::parametro( 'comportamiento' ),
 				'posicion' => self::parametro( 'posicion' ),
 				'layout' => self::parametro( 'layout' )
-			) 
+			)
 		);
 	}
 
@@ -167,25 +167,25 @@ class cdp_cookies
 		{
 			//
 			self::comprobar_usuario_admin();
-				
+
 			//
 			if( !wp_verify_nonce( cdp_cookies_input::post( 'nonce_crear_paginas' ), 'crear_paginas' ) )
 				throw new cdp_cookies_error_nonce();
 
 			// Pág. mas info
 			$pag_info = new cdp_cookies_pagina();
-			$pag_info->titulo = 'Más información sobre las cookies';
-			$pag_info->html = file_get_contents( CDP_COOKIES_DIR_HTML . 'front/mas-informacion.html' );
+			$pag_info -> titulo = __('Más información sobre las cookies', 'cookies');
+			$pag_info -> html = file_get_contents( CDP_COOKIES_DIR_HTML . 'front/mas-informacion.html' );
 			if( !$pag_info->crear() )
 				throw new cdp_cookies_error( $pag_info->mensaje );
-			
+
 			// importante! Guardo la url de la página info que será usada por la política
 			self::parametro( 'enlace_mas_informacion', $pag_info->url );
-			
+
 			// Pág. política
 			$pag_pol = new cdp_cookies_pagina();
-			$pag_pol->titulo = 'Política de cookies';
-			$pag_pol->html =
+			$pag_pol -> titulo = __('Política de cookies', 'cookies');
+			$pag_pol -> html =
 				str_replace
 				(
 					'{enlace_mas_informacion}',
@@ -198,9 +198,9 @@ class cdp_cookies
 			// Todo ok!
 			$resul = array( 'ok' => true, 'url_info' => $pag_info->url, 'url_politica' => $pag_pol->url );
 			if( $pag_pol->ya_existia || $pag_info->ya_existia )
-				$resul['txt'] = 'Alguna de las página ya existía y no ha sido necesario crearla';
+				$resul['txt'] = __('Alguna de las página ya existía y no ha sido necesario crearla', 'cookies');
 			else
-				$resul['txt'] = 'Páginas creadas correctamente';
+				$resul['txt'] = __('Páginas creadas correctamente', 'cookies');
 			echo json_encode( $resul );
 		}
 		catch( Exception $e )
@@ -220,7 +220,7 @@ class cdp_cookies
 		{
 			//
 			self::comprobar_usuario_admin();
-				
+
 			//
 			if( !wp_verify_nonce( cdp_cookies_input::post( 'nonce_guardar' ), 'guardar' ) )
 				throw new cdp_cookies_error_nonce();
@@ -234,12 +234,14 @@ class cdp_cookies
 			cdp_cookies_input::validar_url( 'enlace_politica' );
 			cdp_cookies_input::validar_url( 'enlace_mas_informacion' );
 			if( !cdp_cookies_input::post( 'texto_aviso' ) )
-				throw new cdp_cookies_error( "El texto del aviso no puede estar vacío" );
-			if( !preg_match( '/^[0-9]+px$/i', cdp_cookies_input::post( 'tam_fuente' ) ) )
-				throw new cdp_cookies_error( 
-					"<b>Tamaño de fuente del texto</b> debe tener un valor en px, p.e: 12px" 
+				throw new cdp_cookies_error(
+					__("The message text can not be empty", 'cookies')
 				);
-				
+			if( !preg_match( '/^[0-9]+px$/i', cdp_cookies_input::post( 'tam_fuente' ) ) )
+				throw new cdp_cookies_error(
+					"<b>Tamaño de fuente del texto</b> debe tener un valor en px, p.e: 12px"
+				);
+
 			//
 			self::parametro( 'layout', cdp_cookies_input::post( 'layout' ) );
 			self::parametro( 'posicion', cdp_cookies_input::post( 'posicion' ) );
@@ -250,9 +252,9 @@ class cdp_cookies
 			self::parametro( 'enlace_mas_informacion', cdp_cookies_input::post( 'enlace_mas_informacion' ) );
 			self::parametro( 'texto_aviso', cdp_cookies_input::post( 'texto_aviso' ) );
 			self::parametro( 'tam_fuente', cdp_cookies_input::post( 'tam_fuente' ) );
-				
+
 			//
-			echo json_encode( array( 'ok' => true, 'txt' => 'Configuración guardada correctamente' ) );
+			echo json_encode( array( 'ok' => true, 'txt' => __('Settings saved successfully', 'cookies' ) );
 		}
 		catch( Exception $e )
 		{
@@ -283,7 +285,7 @@ class cdp_cookies
 			);
 		if( !key_exists( $nombre, $vdef ) )
 			throw new cdp_cookies_error( sprintf( "Parámetro desconocido: %s", $nombre ) );
-	
+
 		// Devuelvo valor
 		if( $valor === null )
 		{
@@ -307,11 +309,11 @@ class cdp_cookies
 				return stripslashes( get_option( 'cdp_cookies_' . $nombre, $vdef[$nombre] ) );
 			return get_option( 'cdp_cookies_' . $nombre, $vdef[$nombre] );
 		}
-	
+
 		// Lo almaceno
 		update_option( 'cdp_cookies_' . $nombre, $valor );
 	}
-	
+
 	/**
 	 *
 	 */
@@ -329,10 +331,10 @@ class cdp_cookies
 				'nonce_crear_paginas' => wp_create_nonce( 'crear_paginas' ),
 				'siteurl' => site_url(),
 				'comportamiento' => self::parametro( 'comportamiento' )
-			) 
+			)
 		);
 	}
-	
+
 	/**
 	 *
 	 */
@@ -342,9 +344,9 @@ class cdp_cookies
 			if( function_exists( 'wp_get_current_user' ) )
 				if( current_user_can( 'manage_options' ) )
 					return;
-		throw new cdp_cookies_error( 'No tiene privilegios para acceder a esta página' );
+		throw new cdp_cookies_error( __('You do not have privileges to access this page', 'cookies') );
 	}
-	
+
 	/**
 	 *
 	 */
@@ -362,7 +364,7 @@ class cdp_cookies
 			'cdp_cookies',
 			array( __CLASS__, 'pag_configuracion' )
 		);
-	}	
+	}
 
 	/**
 	 *
@@ -387,50 +389,50 @@ class cdp_cookies_pagina
 	 * salida
 	 */
 	public $ya_existia, $url, $ok, $mensaje;
-	
+
 	/**
-	 * 
+	 *
 	 */
 	function crear()
 	{
 		// Validación del título
-		if( !$this->titulo )
+		if( !$this -> titulo )
 		{
-			$this->ok = false;
-			$this->mensaje = 'Falta el título de la página';
+			$this -> ok = false;
+			$this -> mensaje = __('Missing title page', 'cookies');
 			return false;
 		}
-		
+
 		// Compruebo si ya existe
 		if( $pag = get_page_by_title( $this->titulo ) )
 		{
 			// Si está en la papelera...
 			if( $pag->post_status == 'trash' )
 			{
-				$this->ok = false;
-				$this->mensaje = 'Alguna de las páginas está en la papelera, debe eliminarla primero';
+				$this -> ok = false;
+				$this -> mensaje = __('Some of the pages are in trash, delete them first', 'cookies');
 				return false;
 			}
 
 			// Todo bien...
-			$this->ok = true;
-			$this->ya_existia = true;
-			$this->url = get_permalink( $pag );
+			$this -> ok = true;
+			$this -> ya_existia = true;
+			$this -> url = get_permalink( $pag );
 			return true;
 		}
 
 		// Validación del html
-		if( !$this->html )
+		if( !$this -> html )
 		{
-			$this->ok = false;
-			$this->mensaje = 'Falta el html de la página';
+			$this -> ok = false;
+			$this -> mensaje = __('Page HTML is missing!', 'cookies');
 			return false;
 		}
-		
+
 		// Me dispongo a crear la página insertando el post en BD
 		$p = array();
-		$p['post_title'] = $this->titulo;
-		$p['post_content'] = $this->html;
+		$p['post_title'] = $this -> titulo;
+		$p['post_content'] = $this -> html;
 		$p['post_status'] = 'publish';
 		$p['post_type'] = 'page';
 		$p['comment_status'] = 'closed';
@@ -439,16 +441,16 @@ class cdp_cookies_pagina
 		if( !( $id = wp_insert_post( $p ) ) )
 		{
 			$this->ok = false;
-			$this->mensaje = "No es posible crear la página";
+			$this->mensaje = __('Can not create page', 'cookies');
 			return false;
 		}
-		
+
 		// Se ha creado la página correctamente
 		$this->ok = true;
 		$this->ya_existia = false;
 		$this->url = get_permalink( get_post( $id ) );
 		return true;
-	}	
+	}
 }
 
 ?>
